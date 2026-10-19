@@ -7,3 +7,19 @@
 2026-10-20 00:48:28,997 | ERROR    | agent_logger             | logger_handler.py   :  68 | error logger
 2026-10-20 00:48:29,008 | DEBUG    | agent_logger             | logger_handler.py   :  69 | debug logger
 2026-10-20 02:09:16,062 | ERROR    | agent_logger             | prompts_loader.py   :  12 | [load_system_prompts]在yaml配置项中没有system_prompts_path配置项
+2026-10-20 03:36:57,824 | INFO     | agent_logger             | vector_store.py     : 105 | [load_document]C:\Users\30107\AppData\Local\Temp\tmptajo4svz\data\academic.txt内容加载成功
+2026-10-20 03:36:58,219 | INFO     | agent_logger             | vector_store.py     : 105 | [load_document]C:\Users\30107\AppData\Local\Temp\tmpsiq_ot01\data\academic.txt内容加载成功
+2026-10-20 03:36:58,275 | INFO     | agent_logger             | vector_store.py     : 105 | [load_document]C:\Users\30107\AppData\Local\Temp\tmpsiq_ot01\data\registration.md内容加载成功
+2026-10-20 03:36:58,548 | INFO     | agent_logger             | vector_store.py     :  90 | [load_document]C:\Users\30107\AppData\Local\Temp\tmpsiq_ot01\data\academic.txt内容已经存在于知识库，pass
+2026-10-20 03:36:58,549 | INFO     | agent_logger             | vector_store.py     :  90 | [load_document]C:\Users\30107\AppData\Local\Temp\tmpsiq_ot01\data\registration.md内容已经存在于知识库，pass
+2026-10-20 03:36:58,694 | INFO     | agent_logger             | vector_store.py     : 105 | [load_document]C:\Users\30107\AppData\Local\Temp\tmpx0lrav8t\data\academic.txt内容加载成功
+2026-10-20 03:36:58,831 | INFO     | agent_logger             | vector_store.py     : 105 | [load_document]C:\Users\30107\AppData\Local\Temp\tmprzcf5y2z\data\academic.txt内容加载成功
+2026-10-20 03:36:58,850 | INFO     | agent_logger             | vector_store.py     : 105 | [load_document]C:\Users\30107\AppData\Local\Temp\tmprzcf5y2z\data\academic.txt内容加载成功
+2026-10-20 03:39:22,426 | INFO     | agent_logger             | vector_store.py     : 110 | [load_document]E:\Xiangx\Pycharm\AgentProjects\CustomService\data\关于印发《吉林大学本科学生管理规定》的通知_7dfb61f5fa.txt内容加载成功
+2026-10-20 03:39:24,231 | INFO     | agent_logger             | vector_store.py     : 110 | [load_document]E:\Xiangx\Pycharm\AgentProjects\CustomService\data\吉林大学学籍学历管理高频事项操作手册_6db9949cd3.md内容加载成功
+2026-10-20 03:39:25,111 | INFO     | agent_logger             | vector_store.py     : 110 | [load_document]E:\Xiangx\Pycharm\AgentProjects\CustomService\data\吉林大学本科学分制管理规定_04c692de69.md内容加载成功
+2026-10-20 03:39:25,621 | INFO     | agent_logger             | vector_store.py     : 110 | [load_document]E:\Xiangx\Pycharm\AgentProjects\CustomService\data\吉林大学本科学生学业预警工作实施办法_53f33a13bd.md内容加载成功
+2026-10-20 03:39:26,707 | INFO     | agent_logger             | vector_store.py     : 110 | [load_document]E:\Xiangx\Pycharm\AgentProjects\CustomService\data\吉林大学本科学生学籍管理规定_d3dbc5b69e.md内容加载成功
+2026-10-20 03:39:28,112 | INFO     | agent_logger             | vector_store.py     : 110 | [load_document]E:\Xiangx\Pycharm\AgentProjects\CustomService\data\吉林大学本科学生注册管理办法（校发〔2019〕257号）_07994219a0.md内容加载成功
+2026-10-20 03:39:29,079 | INFO     | agent_logger             | vector_store.py     : 110 | [load_document]E:\Xiangx\Pycharm\AgentProjects\CustomService\data\吉林大学本科学生转专业工作管理办法_703c5a94ef.md内容加载成功
+2026-10-20 03:39:29,726 | INFO     | agent_logger             | vector_store.py     : 110 | [load_document]E:\Xiangx\Pycharm\AgentProjects\CustomService\data\吉林大学本科生辅修学士学位管理办法（试行）_04cec34fb8.md内容加载成功

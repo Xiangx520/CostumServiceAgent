@@ -38,17 +38,18 @@ def listdir_with_allowed_type(dir_path: str, allowed_types: tuple[str]):
         logger.error(f"Directory {dir_path} is not a directory")
         return None
 
-    for f in os.listdir(dir_path):
-        if f.endswith(allowed_types):
-            files.append(os.path.join(dir_path, f))
+    for f in sorted(os.listdir(dir_path)):
+        file_path = os.path.join(dir_path, f)
+        if os.path.isfile(file_path) and f.lower().endswith(allowed_types):
+            files.append(file_path)
 
     return tuple(files)
 
 
 # 加载PDF
-def pdf_loader(file_path: str, password: str) -> list[Document]:
-    return PyPDFLoader(file_path, password).load()
+def pdf_loader(file_path: str, password: str | None = None) -> list[Document]:
+    return PyPDFLoader(file_path, password=password).load()
 
 # 加载text
 def text_loader(file_path: str) -> list[Document]:
-    return TextLoader(file_path).load()
+    return TextLoader(file_path, encoding="utf-8").load()
