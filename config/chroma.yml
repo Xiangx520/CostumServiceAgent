@@ -2,7 +2,7 @@
 
 collection_name: agent
 
-persist_directory: chroma_db
+persist_directory: RAG\chroma_db
 
 topK: 3
 

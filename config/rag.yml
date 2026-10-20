@@ -1,2 +1,4 @@
 chat_model_name: qwen3.8-flash
+# qwen3.8-flash 通过 DashScope 调用时需使用多模态接口，即使仅输入文本。
+chat_model_api: multimodal
 embedding_model_name: qwen3.7-text-embedding-flash

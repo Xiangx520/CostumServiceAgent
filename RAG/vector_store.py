@@ -18,7 +18,7 @@ from utils.file_handler import text_loader, pdf_loader, listdir_with_allowed_typ
 from utils.logger_handler import logger
 
 
-class VectorStore:
+class VectorStoreService:
     def __init__(self, embedding_model: Embeddings | None = None):
         if embedding_model is None:
             embedding_model = get_embedding_model()
@@ -118,7 +118,7 @@ class VectorStore:
 
 
 if __name__ == '__main__':
-    vector_store = VectorStore()
+    vector_store = VectorStoreService()
     vector_store.load_document()
     retriver = vector_store.get_retriver()
     res = retriver.invoke("学业")

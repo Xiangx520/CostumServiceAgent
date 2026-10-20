@@ -25,7 +25,14 @@ class BaseModelFactory(ABC):
 
 class ChatterModelFactory(BaseModelFactory):
     def generator(self) -> Optional[Embeddings | BaseChatModel]:
-        return ChatTongyi(model=rag_conf['chat_model_name'])
+        model = ChatTongyi(model=rag_conf['chat_model_name'])
+        # 当前 ChatTongyi 的自动识别列表尚未覆盖 qwen3.8-flash。
+        # 初始化后指定 SDK 客户端，避免被其初始化校验覆盖。
+        if rag_conf.get('chat_model_api') == 'multimodal':
+            from dashscope import MultiModalConversation
+
+            model.client = MultiModalConversation
+        return model
 
 
 class EmbeddingsFactory(BaseModelFactory):
