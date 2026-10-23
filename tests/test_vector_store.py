@@ -88,6 +88,75 @@ class VectorStoreTests(unittest.TestCase):
                 with self.assertRaises(FileNotFoundError):
                     self.store.load_document()
 
+    def test_changed_document_replaces_old_chunks(self):
+        path = self.data / 'policy.md'
+        path.write_text('旧规定 学业预警', encoding='utf-8')
+        self.store.load_document()
+        path.write_text('新规定 注册管理', encoding='utf-8')
+        stats = self.store.load_document()
+        self.assertEqual(stats['loaded'], 1)
+        self.assertEqual(self.store.count(), 1)
+        self.assertIn('新规定', self.store.vector_store.get()['documents'][0])
+
+    def test_same_content_in_different_sources_keeps_both(self):
+        for name in ('first.md', 'second.md'):
+            (self.data / name).write_text('学业预警', encoding='utf-8')
+        self.store.load_document()
+        self.assertEqual(self.store.count(), 2)
+
+    def test_failed_update_preserves_previous_version(self):
+        path = self.data / 'policy.md'
+        path.write_text('旧规定 学业预警', encoding='utf-8')
+        self.store.load_document()
+        path.write_text('新规定 注册管理', encoding='utf-8')
+        with patch.object(LocalEmbeddings, 'embed_documents', side_effect=RuntimeError('API failure')):
+            with self.assertLogs('agent_logger', level='ERROR'):
+                with self.assertRaises(RuntimeError):
+                    self.store.load_document()
+        self.assertEqual(self.store.count(), 1)
+        self.assertIn('旧规定', self.store.vector_store.get()['documents'][0])
+
+    def test_empty_replacement_removes_old_policy(self):
+        path = self.data / 'policy.md'
+        path.write_text('旧规定 学业预警', encoding='utf-8')
+        self.store.load_document()
+        path.write_text('', encoding='utf-8')
+        self.assertEqual(self.store.load_document()['empty'], 1)
+        self.assertEqual(self.store.count(), 0)
+
+    def test_partial_batch_failure_rolls_back_and_retry_succeeds(self):
+        path = self.data / 'policy.md'
+        path.write_text('旧规定', encoding='utf-8')
+        self.store.load_document()
+        path.write_text('新规定 学业 注册 辅修。' * 300, encoding='utf-8')
+        original = self.store.vector_store.add_documents
+        calls = 0
+
+        def fail_second_batch(documents, **kwargs):
+            nonlocal calls
+            calls += 1
+            if calls == 2:
+                raise RuntimeError('第二批 API 失败')
+            return original(documents, **kwargs)
+
+        with patch.object(self.store.vector_store, 'add_documents', side_effect=fail_second_batch):
+            with self.assertLogs('agent_logger', level='ERROR'):
+                with self.assertRaises(RuntimeError):
+                    self.store.load_document()
+        self.assertEqual(self.store.vector_store.get()['documents'], ['旧规定'])
+        self.store.load_document()
+        self.assertGreater(self.store.count(), 10)
+        self.assertNotIn('旧规定', self.store.vector_store.get()['documents'])
+
+    def test_stale_md5_file_does_not_prevent_rebuild(self):
+        path = self.data / 'policy.md'
+        path.write_text('学业预警', encoding='utf-8')
+        self.store.load_document()
+        self.store.vector_store.delete(ids=self.store.vector_store.get()['ids'])
+        self.assertTrue(self.md5_file.exists())
+        self.store.load_document()
+        self.assertEqual(self.store.count(), 1)
+
     def test_file_loaders_and_extension_filter(self):
         text_path = self.data / "academic.TXT"
         text_path.write_text("中文学业管理", encoding="utf-8")

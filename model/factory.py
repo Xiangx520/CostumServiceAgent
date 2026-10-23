@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from functools import lru_cache
 from typing import Optional
+import os
 from dotenv import load_dotenv
 
 from langchain_community.embeddings import DashScopeEmbeddings
@@ -16,6 +17,11 @@ from utils.path_tool import get_abs_path
 load_dotenv(get_abs_path('.env'))
 
 
+def require_api_key():
+    if not os.getenv('DASHSCOPE_API_KEY', '').strip():
+        raise ValueError('未配置 DASHSCOPE_API_KEY，请复制 .env.example 为 .env 并填写 DashScope API Key。')
+
+
 class BaseModelFactory(ABC):
     @abstractmethod
     def generator(self) -> Optional[Embeddings | BaseChatModel]:
@@ -25,6 +31,7 @@ class BaseModelFactory(ABC):
 
 class ChatterModelFactory(BaseModelFactory):
     def generator(self) -> Optional[Embeddings | BaseChatModel]:
+        require_api_key()
         model = ChatTongyi(model=rag_conf['chat_model_name'])
         # 当前 ChatTongyi 的自动识别列表尚未覆盖 qwen3.8-flash。
         # 初始化后指定 SDK 客户端，避免被其初始化校验覆盖。
@@ -37,6 +44,7 @@ class ChatterModelFactory(BaseModelFactory):
 
 class EmbeddingsFactory(BaseModelFactory):
     def generator(self) -> Optional[Embeddings | BaseChatModel]:
+        require_api_key()
         return DashScopeEmbeddings(model=rag_conf['embedding_model_name'])
 
 

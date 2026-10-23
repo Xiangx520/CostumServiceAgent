@@ -5,3 +5,5 @@ __pycache__/
 logs/
 RAG/chroma_db/
 md5.txt
+sessions/
+reports/
